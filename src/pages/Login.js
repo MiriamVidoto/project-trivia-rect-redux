@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { fetchToken } from '../services/fetchApi';
 
 class Login extends Component {
@@ -25,7 +25,6 @@ class Login extends Component {
     const { history } = this.props;
     const returnToken = await fetchToken();
     localStorage.setItem('token', returnToken);
-
     history.push('/game');
   };
 
@@ -60,7 +59,7 @@ class Login extends Component {
             type="submit"
             data-testid="btn-play"
             disabled={ this.validationEmail(name, email) }
-            onClick={ this.handleClickSubmit }
+            onClick={ (event) => this.handleClickSubmit(event) }
           >
             Play
           </button>
