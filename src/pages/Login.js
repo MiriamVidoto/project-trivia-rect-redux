@@ -27,7 +27,6 @@ class Login extends Component {
     localStorage.setItem('token', returnToken);
 
     history.push('/game');
-
   };
   
   render() {
@@ -79,4 +78,3 @@ Login.propTypes = {
 };
 
 export default Login;
-// teste
