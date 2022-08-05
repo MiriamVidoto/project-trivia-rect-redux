@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { fetchToken } from '../services/fetchApi';
 
 class Login extends Component {
   state = {
@@ -19,16 +20,17 @@ class Login extends Component {
     }
   }
 
-  handleClickSubmit = (event) => {
-    const { loginStore } = this.props;
-    const { email } = this.state;
-
-    loginStore(email);
+  handleClickSubmit = async (event) => {
     event.preventDefault();
+    const { history } = this.props;
+    const returnToken = await fetchToken();
+    localStorage.setItem('token', returnToken);
+    history.push('/game');
   };
 
   render() {
     const { name, email } = this.state;
+    const { history } = this.props;
     return (
       <div>
         <form>
@@ -58,9 +60,16 @@ class Login extends Component {
             type="submit"
             data-testid="btn-play"
             disabled={ this.validationEmail(name, email) }
-            onClick={ this.handleClickSubmit }
+            onClick={ (event) => this.handleClickSubmit(event) }
           >
             Play
+          </button>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => history.push('/settings') }
+          >
+            Configurações
           </button>
         </form>
 
@@ -69,8 +78,9 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
-  loginStore: PropTypes.func.isRequired,
+Login.propTypes = { history: PropTypes.shape({
+  push: PropTypes.func.isRequired,
+}).isRequired,
 };
 
 export default Login;
