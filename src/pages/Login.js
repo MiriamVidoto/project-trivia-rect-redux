@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { fetchToken } from '../services/fetchApi';
 
+
 class Login extends Component {
   state = {
     name: '',
@@ -20,6 +21,7 @@ class Login extends Component {
     }
   }
 
+
   handleClickSubmit = async (event) => {
     event.preventDefault();
     const { history } = this.props;
@@ -27,6 +29,7 @@ class Login extends Component {
     localStorage.setItem('token', returnToken);
 
     history.push('/game');
+
   };
 
   render() {
@@ -79,3 +82,4 @@ Login.propTypes = {
 
 export default Login;
 // teste
+
