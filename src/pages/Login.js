@@ -28,7 +28,7 @@ class Login extends Component {
 
     history.push('/game');
   };
-  
+
   render() {
     const { name, email } = this.state;
     return (
@@ -71,10 +71,9 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
+Login.propTypes = { history: PropTypes.shape({
+  push: PropTypes.func.isRequired,
+}).isRequired,
 };
 
 export default Login;
