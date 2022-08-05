@@ -11,4 +11,3 @@ export const fetchTrivia = async (token) => {
   const resultTrivia = await dataTrivia.json();
   return resultTrivia.results;
 };
-//teste
