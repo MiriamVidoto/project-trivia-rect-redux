@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { fetchToken } from '../services/fetchApi';
+import '../style.component/login.css';
 
 class Login extends Component {
   state = {
@@ -33,45 +34,52 @@ class Login extends Component {
     const { history } = this.props;
     return (
       <div>
-        <form>
-          <label htmlFor="email">
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={ email }
-              data-testid="input-gravatar-email"
-              placeholder="Digite seu email"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <label htmlFor="name">
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={ name }
-              data-testid="input-player-name"
-              placeholder="Digite seu nome"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <button
-            type="submit"
-            data-testid="btn-play"
-            disabled={ this.validationEmail(name, email) }
-            onClick={ (event) => this.handleClickSubmit(event) }
-          >
-            Play
-          </button>
-          <button
-            type="button"
-            data-testid="btn-settings"
-            onClick={ () => history.push('/settings') }
-          >
-            Configurações
-          </button>
-        </form>
+        <div className="login">
+          <h1>Login</h1>
+          <form className="login-form">
+            <label htmlFor="email">
+              <input
+                className="input-user"
+                type="email"
+                name="email"
+                id="email"
+                value={ email }
+                data-testid="input-gravatar-email"
+                placeholder="Digite seu email"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label htmlFor="name">
+              <input
+                className="input-user"
+                type="text"
+                name="name"
+                id="name"
+                value={ name }
+                data-testid="input-player-name"
+                placeholder="Digite seu nome"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <button
+              className="button-play"
+              type="submit"
+              data-testid="btn-play"
+              disabled={ this.validationEmail(name, email) }
+              onClick={ (event) => this.handleClickSubmit(event) }
+            >
+              Play
+            </button>
+            <button
+              className="button-settings"
+              type="button"
+              data-testid="btn-settings"
+              onClick={ () => history.push('/settings') }
+            >
+              Configurações
+            </button>
+          </form>
+        </div>
 
       </div>
     );
