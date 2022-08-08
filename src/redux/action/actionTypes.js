@@ -1,3 +1,2 @@
-const PLAYER_LOGIN = 'PLAYER_LOGIN';
-
-export default PLAYER_LOGIN;
+export const PLAYER_LOGIN = 'PLAYER_LOGIN';
+export const GRAVATAR_EMAIL = 'GRAVATAR_HASH';

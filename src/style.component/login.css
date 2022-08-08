@@ -78,6 +78,11 @@ h1 {
   z-index: 1;
 }
 
-.input:focus {
+.input-user:invalid {
+  border: 1px solid rgb(229, 1, 1);
+}
+
+.input-user:focus {
   border: 1px solid rgb(1, 229, 155);
 }
+

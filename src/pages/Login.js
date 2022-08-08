@@ -1,5 +1,8 @@
+import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { gravatarAction, playerLogin } from '../redux/action';
 import { fetchToken } from '../services/fetchApi';
 import '../style.component/login.css';
 
@@ -22,10 +25,18 @@ class Login extends Component {
   }
 
   handleClickSubmit = async (event) => {
+    const { gravatar, usernformation } = this.props;
+    const { email, name } = this.state;
     event.preventDefault();
     const { history } = this.props;
     const returnToken = await fetchToken();
     localStorage.setItem('token', returnToken);
+
+    const hashEmail = md5(email).toString();
+    gravatar(hashEmail);
+
+    usernformation(name);
+
     history.push('/game');
   };
 
@@ -86,9 +97,17 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = { history: PropTypes.shape({
-  push: PropTypes.func.isRequired,
-}).isRequired,
+Login.propTypes = {
+  usernformation: PropTypes.func.isRequired,
+  gravatar: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  usernformation: (name) => dispatch(playerLogin(name)),
+  gravatar: (email) => dispatch(gravatarAction(email)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
