@@ -1,0 +1,40 @@
+.header-container {
+  background-color: rgb(35, 36, 47);
+
+  /* border: 1px solid red; */
+  border-radius: 10px;
+  display: flex;
+  height: 100px;
+  justify-content: space-between;
+  width: 100%;
+
+}
+
+.header-image {
+  align-items: center;
+
+  /* border: 1px solid red; */
+  color: aliceblue;
+  display: flex;
+  font-family: Roboto , sans-serif;
+  font-size: large;
+  font-weight: 600;
+  justify-content: space-around;
+  width: 250px;
+}
+
+.header-score {
+  align-items: center;
+
+  /* border: 1px solid red; */
+  color: aliceblue;
+  display: flex;
+  font-family: Roboto , sans-serif;
+  font-size: large;
+  justify-content: center;
+  width: 200px;
+}
+
+.header-gravatar {
+  border-radius: 50%;
+}

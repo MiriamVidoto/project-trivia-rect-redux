@@ -1,0 +1,88 @@
+h1 {
+  color: aliceblue;
+  font-family: Roboto , sans-serif;
+}
+
+.login {
+  align-items: center;
+
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+}
+
+.login-form {
+  align-items: center;
+
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  justify-content: space-around;
+  width: 300px;
+}
+
+.button-play {
+  background-color: rgb(1, 229, 155);
+  border: none;
+  border-radius: 8px;
+  color: rgb(19, 20, 27);
+  cursor: pointer;
+  font-size: 16px;
+  height: 40px;
+  margin-top: 35px;
+  overflow: visible;
+  padding: 10px 22px;
+  text-align: center;
+  width: 100%;
+}
+
+.button-play:disabled {
+  opacity: 0.3;
+}
+
+.button-settings {
+  align-items: center;
+  background: transparent;
+  border: 2px solid rgb(1, 229, 155);
+  border-radius: 8px;
+  color: rgb(1, 229, 155);
+  cursor: pointer;
+  display: flex;
+  font-size: 16px;
+  height: 40px;
+  justify-content: center;
+  outline: none;
+  overflow: visible;
+  padding: 10px 22px;
+  text-decoration: none;
+  width: 100%;
+}
+
+.button-settings:hover {
+  text-decoration: underline;
+}
+
+.input-user {
+  background-color: transparent;
+  border: 2px solid rgb(53, 53, 70);
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  height: 30px;
+  outline: none;
+  padding: 16px;
+  width: 100%;
+  z-index: 1;
+}
+
+.input-user:invalid {
+  border: 1px solid rgb(229, 1, 1);
+}
+
+.input-user:focus {
+  border: 1px solid rgb(1, 229, 155);
+}
+

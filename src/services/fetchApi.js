@@ -13,3 +13,10 @@ export const fetchTrivia = async (token) => {
   const resultTrivia = await dataTrivia.json();
   return resultTrivia.results;
 };
+
+// export const fetchGravatar = async (email) => {
+//   const gravatarApi = `https://www.gravatar.com/avatar/${email}`;
+//   const response = await fetch(gravatarApi);
+//   const data = await response.json();
+//   return data;
+// };

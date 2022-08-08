@@ -1,8 +1,11 @@
-import PLAYER_LOGIN from './actionTypes';
+import { PLAYER_LOGIN, GRAVATAR_EMAIL } from './actionTypes';
 
-const playerLogin = (name) => ({
+export const playerLogin = (name) => ({
   type: PLAYER_LOGIN,
   name,
 });
 
-export default playerLogin;
+export const gravatarAction = (email) => ({
+  type: GRAVATAR_EMAIL,
+  email,
+});
