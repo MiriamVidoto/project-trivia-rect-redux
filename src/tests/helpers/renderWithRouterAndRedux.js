@@ -1,11 +1,11 @@
-import React from 'react';
 import { render } from '@testing-library/react';
-import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
+import React from 'react';
 import { Provider } from 'react-redux';
-import {  legacy_createStore as createStore, applyMiddleware } from 'redux';
+import { Router } from 'react-router-dom';
+import { applyMiddleware, legacy_createStore as createStore } from 'redux';
 import thunk from 'redux-thunk';
-import reducer from '../../redux/reducers';
+import reducer from '../../redux/reducer';
 
 export const renderWithRouterAndRedux = (component, initialState, route = '/') => {
   const store = createStore(reducer, initialState, applyMiddleware(thunk));
