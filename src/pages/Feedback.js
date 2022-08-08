@@ -35,7 +35,7 @@ class Feedback extends Component {
 }
 const mapStateToProps = (store) => ({
   assertions: store.player.assertions,
-  score: store.number.score,
+  score: store.player.score,
 });
 
 Feedback.propTypes = {
@@ -46,4 +46,4 @@ Feedback.propTypes = {
   }).isRequired,
 };
 
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps, null)(Feedback);
