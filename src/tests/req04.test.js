@@ -87,7 +87,7 @@ describe('A página de login:', () => {
 
     const { pathname } = history.location;
 
-    // expect(pathname).toBe('/game');
+    expect(pathname).toBe('/game');
   });
 
   it('O token é salvo na localStorage', async () => {
