@@ -1,22 +1,52 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Header from '../component/Header';
-import Timer from '../component/Timer';
+import { getScore } from '../redux/action';
 import { fetchTrivia } from '../services/fetchApi';
 import '../style.component/game.css';
 
 // import { fetchGravatar } from '../services/fetchApi';
+
+const seconds = 1000;
 class Game extends Component {
   state = {
     returnQuestions: [],
+    randomPositions: [],
     returnCode: 0,
     disabled: false,
     nextButtonHidden: true,
     counter: 0,
+    questionsColors: false,
+    secondsTimer: 30,
   }
 
-  componentDidMount() {
-    this.getQuestions();
+  async componentDidMount() {
+    await this.getQuestions();
+    this.randomPositions();
+
+    this.timer = setInterval(() => {
+      this.setState((prevState) => ({
+        secondsTimer: prevState.secondsTimer - 1,
+      }), () => {
+        const { secondsTimer } = this.state;
+        if (!secondsTimer) return this.clearTime();
+      });
+    }, seconds);
+  }
+
+  btnDisabled = () => {
+    this.setState((prevState) => ({
+      disabled: !prevState.prevState,
+    }));
+  }
+
+  clearTime = () => {
+    clearInterval(this.timer);
+    this.btnDisabled();
+    this.setState({
+      disabled: true,
+    });
   }
 
   getQuestions = async () => {
@@ -28,45 +58,69 @@ class Game extends Component {
     });
   }
 
-  // questionsChecked = (question, index) => {
-  //   const { returnQuestions } = this.props;
-  //   if (question === returnQuestions[counter].correct_answer) return 'correct-answer';
-  //   return `wrong-answer-${!index ? 0 : index - 1}`;
-  // }
+  validationScore = () => {
+    const { returnQuestions, counter, secondsTimer } = this.state;
+    const { setScore } = this.props;
+    const { difficulty } = returnQuestions[counter];
 
-  // questionsColors = (question) => {
-  //   const { returnQuestions } = this.props;
-  //   if (question === returnQuestions[counter].correct_answer) return 'correct-answer';
-  //   return 'wrong-answer';
-  // }
+    const scoreBase = 10;
+    const scoreHard = 3;
+    const scoreMedium = 2;
 
-  btnDisabled = () => {
-    this.setState((prevState) => ({
-      disabled: !prevState.prevState,
-    }));
+    if (difficulty === 'hard') {
+      setScore(scoreBase + (secondsTimer * scoreHard));
+    }
+    if (difficulty === 'medium') {
+      setScore(scoreBase + (secondsTimer * scoreMedium));
+    }
+    if (difficulty === 'easy') {
+      setScore(scoreBase + secondsTimer);
+    }
   }
 
-  showNextButton = () => {
+  handleClick = (isCorrectAnswer) => {
+    if (isCorrectAnswer) {
+      console.log(this.validationScore());
+    }
     this.setState({
+      questionsColors: true,
       nextButtonHidden: false,
     });
   }
 
-  nextButtonClick = () => {
-    this.setState((state) => ({
-      nextButtonHidden: true,
-      counter: state.counter + 1,
-    }));
+    nextButtonClick = () => {
+      this.setState((state) => ({
+        nextButtonHidden: true,
+        counter: state.counter + 1,
+      }), () => this.randomPositions());
+    }
+
+  randomPositions = () => {
+    const lastPosition = 3;
+    const positions = [0, 1, 2, lastPosition];
+    const number = 0.5;
+    this.setState({
+      randomPositions: positions.sort(() => Math.random() - number),
+    });
   }
 
   render() {
     const {
       returnQuestions,
       returnCode,
-      disabled,
       nextButtonHidden,
-      counter } = this.state;
+      counter,
+      secondsTimer,
+      questionsColors,
+      disabled,
+      randomPositions } = this.state;
     const { history } = this.props;
+
+    const errorCode = 3;
+    if (returnCode === errorCode) {
+      localStorage.removeItem('token');
+      history.push('/');
+    }
 
     let newArray = [];
 
@@ -76,9 +130,9 @@ class Game extends Component {
           key={ index }
           type="button"
           disabled={ disabled }
-          className="wrong-answer"
+          className={ questionsColors ? 'wrong-answer' : '' }
           data-testid={ `wrong-answer-${index}` }
-          onClick={ () => this.showNextButton() }
+          onClick={ () => this.handleClick() }
         >
           {answer}
         </button>
@@ -87,24 +141,22 @@ class Game extends Component {
         <button
           type="button"
           disabled={ disabled }
-          className="correct-answer"
+          className={ questionsColors ? 'correct-answer' : '' }
           data-testid="correct-answer"
           key="correct"
-          onClick={ () => this.showNextButton() }
+          onClick={ () => this.handleClick(true) }
         >
           {returnQuestions[counter].correct_answer}
         </button>
       ),
       ];
-      const number = 0.5;
-      newArray = newArray.sort(() => Math.random() - number);
     }
 
-    const errorCode = 3;
-    if (returnCode === errorCode) {
-      localStorage.removeItem('token');
-      history.push('/');
-    }
+    const randomizedAnswers = [];
+
+    randomPositions.forEach((position) => {
+      randomizedAnswers.push(newArray[position]);
+    });
 
     return (
       <div>
@@ -117,13 +169,13 @@ class Game extends Component {
               {returnQuestions.length > 0
           && returnQuestions[counter].question}
             </h2>
-            <Timer
-              btnDisabled={ () => this.btnDisabled() }
-            />
+            <h2>
+              { secondsTimer }
+            </h2>
             <div
               data-testid="answer-options"
             >
-              {newArray}
+              {randomizedAnswers}
             </div>
             { !nextButtonHidden
             && (
@@ -146,7 +198,11 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  // secondsTime: PropTypes.func.isRequired,
+  setScore: PropTypes.func.isRequired,
 };
 
-export default Game;
+const mapDispatchToProps = (dispatch) => ({
+  setScore: (score) => dispatch(getScore(score)),
+});
+
+export default connect(null, mapDispatchToProps)(Game);

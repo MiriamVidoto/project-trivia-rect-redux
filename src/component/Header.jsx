@@ -7,7 +7,7 @@ import '../style.component/header.css';
 
 class Header extends Component {
   render() {
-    const { hashEmail, name } = this.props;
+    const { hashEmail, name, score } = this.props;
     return (
       <div className="header-container">
         <div className="header-image">
@@ -21,7 +21,11 @@ class Header extends Component {
           <span data-testid="header-player-name">{ name }</span>
         </div>
         <div className="header-score">
-          <span data-testid="header-score">Score: 0</span>
+          <p>
+            Score:
+            {' '}
+            <span data-testid="header-score">{score}</span>
+          </p>
         </div>
       </div>
     );
@@ -31,11 +35,13 @@ class Header extends Component {
 Header.propTypes = {
   hashEmail: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   hashEmail: state.player.gravatarEmail,
   name: state.player.name,
+  score: state.player.score,
 });
 
 export default connect(mapStateToProps)(Header);
