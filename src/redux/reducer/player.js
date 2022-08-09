@@ -1,4 +1,4 @@
-import { GRAVATAR_EMAIL, PLAYER_LOGIN } from '../action/actionTypes';
+import { GET_SCORE, GRAVATAR_EMAIL, PLAYER_LOGIN } from '../action/actionTypes';
 
 const inicialState = {
   name: '',
@@ -14,6 +14,9 @@ const player = (state = inicialState, action) => {
 
   case GRAVATAR_EMAIL:
     return { ...state, gravatarEmail: action.email };
+
+  case GET_SCORE:
+    return { ...state, score: state.score + action.score };
 
   default:
     return state;

@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Header from '../component/Header';
+import { getScore } from '../redux/action';
 import { fetchTrivia } from '../services/fetchApi';
 import '../style.component/game.css';
 
@@ -10,19 +12,18 @@ const seconds = 1000;
 class Game extends Component {
   state = {
     returnQuestions: [],
-    newArray: [],
+    randomPositions: [],
     returnCode: 0,
     disabled: false,
     nextButtonHidden: true,
     counter: 0,
     questionsColors: false,
-    secondsTimer: 10,
-
+    secondsTimer: 30,
   }
 
   async componentDidMount() {
     await this.getQuestions();
-    this.randommAnswers();
+    this.randomPositions();
 
     this.timer = setInterval(() => {
       this.setState((prevState) => ({
@@ -57,26 +58,30 @@ class Game extends Component {
     });
   }
 
-  // validationScore = () => {
-  //   const { difficulty } = returnQuestions[counter];
+  validationScore = () => {
+    const { returnQuestions, counter, secondsTimer } = this.state;
+    const { setScore } = this.props;
+    const { difficulty } = returnQuestions[counter];
 
-  //   const scoreBase = 10;
-  //   const scoreHard = 3;
-  //   const scoreMedium = 2;
+    const scoreBase = 10;
+    const scoreHard = 3;
+    const scoreMedium = 2;
 
-  //   if (difficulty === 'hard') {
-  //     return scoreBase + (timer * scoreHard);
-  //   }
-  //   if (difficulty === 'medium') {
-  //     return scoreBase + (timer * scoreMedium);
-  //   }
-  //   if (difficulty === 'easy') {
-  //     return scoreBase + timer;
-  //   }
-  // }
+    if (difficulty === 'hard') {
+      setScore(scoreBase + (secondsTimer * scoreHard));
+    }
+    if (difficulty === 'medium') {
+      setScore(scoreBase + (secondsTimer * scoreMedium));
+    }
+    if (difficulty === 'easy') {
+      setScore(scoreBase + secondsTimer);
+    }
+  }
 
-  handleClick = () => {
-    // this.validationScore();
+  handleClick = (isCorrectAnswer) => {
+    if (isCorrectAnswer) {
+      console.log(this.validationScore());
+    }
     this.setState({
       questionsColors: true,
       nextButtonHidden: false,
@@ -87,40 +92,15 @@ class Game extends Component {
       this.setState((state) => ({
         nextButtonHidden: true,
         counter: state.counter + 1,
-      }));
+      }), () => this.randomPositions());
     }
 
-  randommAnswers = () => {
-    const { counter, questionsColors, returnQuestions, disabled } = this.state;
-    let newArray = [...returnQuestions[counter].incorrect_answers.map((answer, index) => (
-      <button
-        key={ index }
-        type="button"
-        disabled={ disabled }
-        className={ questionsColors ? 'wrong-answer' : '' }
-        data-testid={ `wrong-answer-${index}` }
-        onClick={ () => this.handleClick() }
-      >
-        {answer}
-      </button>
-    )),
-    (
-      <button
-        type="button"
-        disabled={ disabled }
-        className={ questionsColors ? 'correct-answer' : '' }
-        data-testid="correct-answer"
-        key="correct"
-        onClick={ () => this.handleClick() }
-      >
-        {returnQuestions[counter].correct_answer}
-      </button>
-    ),
-    ];
+  randomPositions = () => {
+    const lastPosition = 3;
+    const positions = [0, 1, 2, lastPosition];
     const number = 0.5;
-    newArray = newArray.sort(() => Math.random() - number);
     this.setState({
-      newArray,
+      randomPositions: positions.sort(() => Math.random() - number),
     });
   }
 
@@ -129,7 +109,11 @@ class Game extends Component {
       returnQuestions,
       returnCode,
       nextButtonHidden,
-      counter, secondsTimer, newArray } = this.state;
+      counter,
+      secondsTimer,
+      questionsColors,
+      disabled,
+      randomPositions } = this.state;
     const { history } = this.props;
 
     const errorCode = 3;
@@ -137,6 +121,42 @@ class Game extends Component {
       localStorage.removeItem('token');
       history.push('/');
     }
+
+    let newArray = [];
+
+    if (returnQuestions.length > 0) {
+      newArray = [...returnQuestions[counter].incorrect_answers.map((answer, index) => (
+        <button
+          key={ index }
+          type="button"
+          disabled={ disabled }
+          className={ questionsColors ? 'wrong-answer' : '' }
+          data-testid={ `wrong-answer-${index}` }
+          onClick={ () => this.handleClick() }
+        >
+          {answer}
+        </button>
+      )),
+      (
+        <button
+          type="button"
+          disabled={ disabled }
+          className={ questionsColors ? 'correct-answer' : '' }
+          data-testid="correct-answer"
+          key="correct"
+          onClick={ () => this.handleClick(true) }
+        >
+          {returnQuestions[counter].correct_answer}
+        </button>
+      ),
+      ];
+    }
+
+    const randomizedAnswers = [];
+
+    randomPositions.forEach((position) => {
+      randomizedAnswers.push(newArray[position]);
+    });
 
     return (
       <div>
@@ -155,7 +175,7 @@ class Game extends Component {
             <div
               data-testid="answer-options"
             >
-              {newArray}
+              {randomizedAnswers}
             </div>
             { !nextButtonHidden
             && (
@@ -178,6 +198,11 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  setScore: PropTypes.func.isRequired,
 };
 
-export default Game;
+const mapDispatchToProps = (dispatch) => ({
+  setScore: (score) => dispatch(getScore(score)),
+});
+
+export default connect(null, mapDispatchToProps)(Game);
