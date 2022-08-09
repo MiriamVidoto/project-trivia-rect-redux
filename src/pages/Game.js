@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Header from '../component/Header';
+import Timer from '../component/Timer';
 import { fetchTrivia } from '../services/fetchApi';
 import '../style.component/game.css';
-import Timer from '../component/Timer';
 
 // import { fetchGravatar } from '../services/fetchApi';
 class Game extends Component {
@@ -11,6 +11,8 @@ class Game extends Component {
     returnQuestions: [],
     returnCode: 0,
     disabled: false,
+    nextButtonHidden: true,
+    counter: 0,
   }
 
   componentDidMount() {
@@ -28,13 +30,13 @@ class Game extends Component {
 
   // questionsChecked = (question, index) => {
   //   const { returnQuestions } = this.props;
-  //   if (question === returnQuestions[0].correct_answer) return 'correct-answer';
+  //   if (question === returnQuestions[counter].correct_answer) return 'correct-answer';
   //   return `wrong-answer-${!index ? 0 : index - 1}`;
   // }
 
   // questionsColors = (question) => {
   //   const { returnQuestions } = this.props;
-  //   if (question === returnQuestions[0].correct_answer) return 'correct-answer';
+  //   if (question === returnQuestions[counter].correct_answer) return 'correct-answer';
   //   return 'wrong-answer';
   // }
 
@@ -44,21 +46,39 @@ class Game extends Component {
     }));
   }
 
+  showNextButton = () => {
+    this.setState({
+      nextButtonHidden: false,
+    });
+  }
+
+  nextButtonClick = () => {
+    this.setState((state) => ({
+      nextButtonHidden: true,
+      counter: state.counter + 1,
+    }));
+  }
+
   render() {
-    const { returnQuestions, returnCode, disabled } = this.state;
+    const {
+      returnQuestions,
+      returnCode,
+      disabled,
+      nextButtonHidden,
+      counter } = this.state;
     const { history } = this.props;
 
     let newArray = [];
 
     if (returnQuestions.length > 0) {
-      newArray = [...returnQuestions[0].incorrect_answers.map((answer, index) => (
+      newArray = [...returnQuestions[counter].incorrect_answers.map((answer, index) => (
         <button
           key={ index }
           type="button"
           disabled={ disabled }
           className="wrong-answer"
           data-testid={ `wrong-answer-${index}` }
-          onClick={ () => {} }
+          onClick={ () => this.showNextButton() }
         >
           {answer}
         </button>
@@ -70,9 +90,9 @@ class Game extends Component {
           className="correct-answer"
           data-testid="correct-answer"
           key="correct"
-          onClick={ () => {} }
+          onClick={ () => this.showNextButton() }
         >
-          {returnQuestions[0].correct_answer}
+          {returnQuestions[counter].correct_answer}
         </button>
       ),
       ];
@@ -92,10 +112,10 @@ class Game extends Component {
         {returnQuestions.length > 0
         && (
           <div>
-            <h2 data-testid="question-category">{returnQuestions[0].category}</h2>
+            <h2 data-testid="question-category">{returnQuestions[counter].category}</h2>
             <h2 data-testid="question-text">
               {returnQuestions.length > 0
-          && returnQuestions[0].question}
+          && returnQuestions[counter].question}
             </h2>
             <Timer
               btnDisabled={ () => this.btnDisabled() }
@@ -105,7 +125,18 @@ class Game extends Component {
             >
               {newArray}
             </div>
-          </div>)}
+            { !nextButtonHidden
+            && (
+              <button
+                type="button"
+                onClick={ () => this.nextButtonClick() }
+                data-testid="btn-next"
+              >
+                Next
+              </button>
+            )}
+          </div>
+        )}
       </div>
     );
   }
