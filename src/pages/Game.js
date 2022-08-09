@@ -88,12 +88,20 @@ class Game extends Component {
     });
   }
 
-    nextButtonClick = () => {
-      this.setState((state) => ({
-        nextButtonHidden: true,
-        counter: state.counter + 1,
-      }), () => this.randomPositions());
+  nextButtonClick = () => {
+    const { counter } = this.state;
+    const { history } = this.props;
+    const lastQuestionPosition = 4;
+    if (counter === lastQuestionPosition) {
+      history.push('/feedback');
     }
+    this.setState((state) => ({
+      nextButtonHidden: true,
+      counter: state.counter + 1,
+      secondsTimer: 30,
+      questionsColors: false,
+    }), () => this.randomPositions());
+  }
 
   randomPositions = () => {
     const lastPosition = 3;
