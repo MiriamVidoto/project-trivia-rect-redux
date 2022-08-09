@@ -80,7 +80,7 @@ class Game extends Component {
 
   handleClick = (isCorrectAnswer) => {
     if (isCorrectAnswer) {
-      console.log(this.validationScore());
+      this.validationScore();
     }
     this.setState({
       questionsColors: true,
