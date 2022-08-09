@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import Header from '../component/Header';
 
 class Feedback extends Component {
@@ -33,6 +33,7 @@ class Feedback extends Component {
     );
   }
 }
+
 const mapStateToProps = (store) => ({
   assertions: store.player.assertions,
   score: store.player.score,

@@ -16,7 +16,10 @@ const player = (state = inicialState, action) => {
     return { ...state, gravatarEmail: action.email };
 
   case GET_SCORE:
-    return { ...state, score: state.score + action.score };
+    return { ...state,
+      score: state.score + action.score,
+      assertions: state.assertions + 1,
+    };
 
   default:
     return state;
