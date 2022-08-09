@@ -1,22 +1,51 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Header from '../component/Header';
-import Timer from '../component/Timer';
 import { fetchTrivia } from '../services/fetchApi';
 import '../style.component/game.css';
 
 // import { fetchGravatar } from '../services/fetchApi';
+
+const seconds = 1000;
 class Game extends Component {
   state = {
     returnQuestions: [],
+    newArray: [],
     returnCode: 0,
     disabled: false,
     nextButtonHidden: true,
     counter: 0,
+    questionsColors: false,
+    secondsTimer: 10,
+
   }
 
-  componentDidMount() {
-    this.getQuestions();
+  async componentDidMount() {
+    await this.getQuestions();
+    this.randommAnswers();
+
+    this.timer = setInterval(() => {
+      this.setState((prevState) => ({
+        secondsTimer: prevState.secondsTimer - 1,
+      }), () => {
+        const { secondsTimer } = this.state;
+        if (!secondsTimer) return this.clearTime();
+      });
+    }, seconds);
+  }
+
+  btnDisabled = () => {
+    this.setState((prevState) => ({
+      disabled: !prevState.prevState,
+    }));
+  }
+
+  clearTime = () => {
+    clearInterval(this.timer);
+    this.btnDisabled();
+    this.setState({
+      disabled: true,
+    });
   }
 
   getQuestions = async () => {
@@ -28,77 +57,80 @@ class Game extends Component {
     });
   }
 
-  // questionsChecked = (question, index) => {
-  //   const { returnQuestions } = this.props;
-  //   if (question === returnQuestions[counter].correct_answer) return 'correct-answer';
-  //   return `wrong-answer-${!index ? 0 : index - 1}`;
+  // validationScore = () => {
+  //   const { difficulty } = returnQuestions[counter];
+
+  //   const scoreBase = 10;
+  //   const scoreHard = 3;
+  //   const scoreMedium = 2;
+
+  //   if (difficulty === 'hard') {
+  //     return scoreBase + (timer * scoreHard);
+  //   }
+  //   if (difficulty === 'medium') {
+  //     return scoreBase + (timer * scoreMedium);
+  //   }
+  //   if (difficulty === 'easy') {
+  //     return scoreBase + timer;
+  //   }
   // }
 
-  // questionsColors = (question) => {
-  //   const { returnQuestions } = this.props;
-  //   if (question === returnQuestions[counter].correct_answer) return 'correct-answer';
-  //   return 'wrong-answer';
-  // }
-
-  btnDisabled = () => {
-    this.setState((prevState) => ({
-      disabled: !prevState.prevState,
-    }));
-  }
-
-  showNextButton = () => {
+  handleClick = () => {
+    // this.validationScore();
     this.setState({
+      questionsColors: true,
       nextButtonHidden: false,
     });
   }
 
-  nextButtonClick = () => {
-    this.setState((state) => ({
-      nextButtonHidden: true,
-      counter: state.counter + 1,
-    }));
+    nextButtonClick = () => {
+      this.setState((state) => ({
+        nextButtonHidden: true,
+        counter: state.counter + 1,
+      }));
+    }
+
+  randommAnswers = () => {
+    const { counter, questionsColors, returnQuestions, disabled } = this.state;
+    let newArray = [...returnQuestions[counter].incorrect_answers.map((answer, index) => (
+      <button
+        key={ index }
+        type="button"
+        disabled={ disabled }
+        className={ questionsColors ? 'wrong-answer' : '' }
+        data-testid={ `wrong-answer-${index}` }
+        onClick={ () => this.handleClick() }
+      >
+        {answer}
+      </button>
+    )),
+    (
+      <button
+        type="button"
+        disabled={ disabled }
+        className={ questionsColors ? 'correct-answer' : '' }
+        data-testid="correct-answer"
+        key="correct"
+        onClick={ () => this.handleClick() }
+      >
+        {returnQuestions[counter].correct_answer}
+      </button>
+    ),
+    ];
+    const number = 0.5;
+    newArray = newArray.sort(() => Math.random() - number);
+    this.setState({
+      newArray,
+    });
   }
 
   render() {
     const {
       returnQuestions,
       returnCode,
-      disabled,
       nextButtonHidden,
-      counter } = this.state;
+      counter, secondsTimer, newArray } = this.state;
     const { history } = this.props;
-
-    let newArray = [];
-
-    if (returnQuestions.length > 0) {
-      newArray = [...returnQuestions[counter].incorrect_answers.map((answer, index) => (
-        <button
-          key={ index }
-          type="button"
-          disabled={ disabled }
-          className="wrong-answer"
-          data-testid={ `wrong-answer-${index}` }
-          onClick={ () => this.showNextButton() }
-        >
-          {answer}
-        </button>
-      )),
-      (
-        <button
-          type="button"
-          disabled={ disabled }
-          className="correct-answer"
-          data-testid="correct-answer"
-          key="correct"
-          onClick={ () => this.showNextButton() }
-        >
-          {returnQuestions[counter].correct_answer}
-        </button>
-      ),
-      ];
-      const number = 0.5;
-      newArray = newArray.sort(() => Math.random() - number);
-    }
 
     const errorCode = 3;
     if (returnCode === errorCode) {
@@ -117,9 +149,9 @@ class Game extends Component {
               {returnQuestions.length > 0
           && returnQuestions[counter].question}
             </h2>
-            <Timer
-              btnDisabled={ () => this.btnDisabled() }
-            />
+            <h2>
+              { secondsTimer }
+            </h2>
             <div
               data-testid="answer-options"
             >
@@ -146,7 +178,6 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  // secondsTime: PropTypes.func.isRequired,
 };
 
 export default Game;
