@@ -14,9 +14,7 @@ h1 {
 }
 
 .login-form {
-  align-items: center;
-
-  /* border: 1px solid red; */
+  align-content: flex-start;
   display: flex;
   flex-direction: column;
   height: 300px;
@@ -74,8 +72,7 @@ h1 {
   height: 30px;
   outline: none;
   padding: 16px;
-  width: 100%;
-  z-index: 1;
+  width: 88%;
 }
 
 .input-user:invalid {
