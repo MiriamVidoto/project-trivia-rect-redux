@@ -7,9 +7,9 @@ import mockToken from "./mocks/mockToken";
 
 describe('A página de login:', () => {
 
-  window.fetch = jest.fn(async () => ({
-    json: async () => mockToken,
-  }));
+  jest.spyOn(global, 'fetch').mockResolvedValue({
+    json: jest.fn().mockResolvedValue(mockToken)
+  })
 
   afterEach(() => jest.clearAllMocks());
 
