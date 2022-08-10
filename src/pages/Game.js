@@ -167,34 +167,42 @@ class Game extends Component {
     });
 
     return (
-      <div>
+      <div className="main">
         <Header />
         {returnQuestions.length > 0
         && (
-          <div>
-            <h2 data-testid="question-category">{returnQuestions[counter].category}</h2>
-            <h2 data-testid="question-text">
-              {returnQuestions.length > 0
-          && returnQuestions[counter].question}
-            </h2>
-            <h2>
-              { secondsTimer }
-            </h2>
+          <div className="questionDiv">
+            <div className="timer">
+              <span>{ secondsTimer }</span>
+            </div>
+            <div className="categoryDiv">
+              <h2 data-testid="question-category">
+                {returnQuestions[counter].category}
+              </h2>
+              <span data-testid="question-text">
+                {returnQuestions.length > 0
+            && returnQuestions[counter].question}
+              </span>
+            </div>
             <div
+              className="answerDiv"
               data-testid="answer-options"
             >
               {randomizedAnswers}
             </div>
-            { !nextButtonHidden
-            && (
-              <button
-                type="button"
-                onClick={ () => this.nextButtonClick() }
-                data-testid="btn-next"
-              >
-                Next
-              </button>
-            )}
+            <div className="nextDivButton">
+              { !nextButtonHidden
+              && (
+                <button
+                  className="nextButton"
+                  type="button"
+                  onClick={ () => this.nextButtonClick() }
+                  data-testid="btn-next"
+                >
+                  Next
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>

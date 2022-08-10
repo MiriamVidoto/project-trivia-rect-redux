@@ -35,6 +35,10 @@
   width: 200px;
 }
 
+.headerScore {
+  font-size: 40px;
+}
+
 .header-gravatar {
   border-radius: 50%;
 }
