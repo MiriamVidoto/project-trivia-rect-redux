@@ -99,9 +99,9 @@ describe('Testa se a página de Game tem os elementos e comportamentos esperados
         json: jest.fn().mockResolvedValue(tokenInvalidQuestions),
       });
 
-      const {history} = renderWithRouterAndRedux(<App />, {}, '/Game');
+      const {history} = renderWithRouterAndRedux(<App />, {}, '/');
 
-      expect(history.location.pathname).toBe('/Game');
+      expect(history.location.pathname).toBe('/');
 
       jest.restoreAllMocks();
   })

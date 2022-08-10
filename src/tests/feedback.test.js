@@ -4,6 +4,7 @@ import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux';
 import App from '../App';
 import Feedback from '../pages/Feedback';
 import userEvent from '@testing-library/user-event';
+import { toHaveTextContent } from '@testing-library/jest-dom';
 
 describe('testa se a página de feedback possui os elementos corretos', () => {
   test('se a página possui o nome e o score do usuário', () => {
@@ -41,6 +42,19 @@ describe('testa se a página de feedback possui os elementos corretos', () => {
     expect(rankingBtn).toBeInTheDocument();
     userEvent.click(rankingBtn)
     expect(history.location.pathname).toBe('/ranking')
-    
+  })
+  test('testa msg "Could be better..."', () => {
+    const { history } = renderWithRouterAndRedux(<App /> , { player: {assertions: 2 } });
+    history.push('/Feedback');
+
+    const msg = screen.getByTestId('feedback-text');
+    expect(msg).toHaveTextContent('Could be better...');
+  })
+  test('testa msg "Well Done!"', () => {
+    const { history } = renderWithRouterAndRedux(<App /> , { player: {assertions: 3 } });
+    history.push('/Feedback');
+
+    const msg = screen.getByTestId('feedback-text');
+    expect(msg).toHaveTextContent('Well Done!');
   })
 })
