@@ -4,6 +4,18 @@ import { connect } from 'react-redux';
 import Header from '../component/Header';
 
 class Feedback extends Component {
+  componentDidMount() {
+    const { name, hashEmail, score } = this.props;
+    const ranking = {
+      name,
+      hashEmail,
+      score,
+    };
+    const newRanking = JSON.parse(localStorage.getItem('ranking')) || [];
+    newRanking.push(ranking);
+    localStorage.setItem('ranking', JSON.stringify(newRanking));
+  }
+
   render() {
     const { assertions, score, history } = this.props;
     const feedbackCondition = 3;
@@ -37,11 +49,15 @@ class Feedback extends Component {
 const mapStateToProps = (store) => ({
   assertions: store.player.assertions,
   score: store.player.score,
+  hashEmail: store.player.gravatarEmail,
+  name: store.player.name,
 });
 
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  hashEmail: PropTypes.string.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,

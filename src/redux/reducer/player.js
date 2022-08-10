@@ -10,7 +10,7 @@ const inicialState = {
 const player = (state = inicialState, action) => {
   switch (action.type) {
   case PLAYER_LOGIN:
-    return { ...state, name: action.name };
+    return { ...state, name: action.name, score: 0, assertions: 0 };
 
   case GRAVATAR_EMAIL:
     return { ...state, gravatarEmail: action.email };
