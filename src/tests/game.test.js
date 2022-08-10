@@ -99,9 +99,12 @@ describe('Testa se a página de Game tem os elementos e comportamentos esperados
         json: jest.fn().mockResolvedValue(tokenInvalidQuestions),
       });
 
-      const {history} = renderWithRouterAndRedux(<App />, {}, '/');
+      expect(localStorage.getItem('token')).not.toBeNull();
 
-      expect(history.location.pathname).toBe('/');
+      const {history} = renderWithRouterAndRedux(<App />, {}, '/game');
+
+      await waitFor(() => expect(history.location.pathname).toBe('/'));
+      expect(localStorage.getItem('token')).toBeNull();
 
       jest.restoreAllMocks();
   })
@@ -151,9 +154,9 @@ describe('Testa se a página de Game tem os elementos e comportamentos esperados
           const answer = screen.getByTestId('answer-options');
           expect(answer).toBeInTheDocument();
 
-          const answerWrong = screen.getByTestId('wrong-answer-0');
+          const answerCorrect = screen.getByTestId('correct-answer');
 
-          userEvent.click(answerWrong);
+          userEvent.click(answerCorrect);
           const nextButton = screen.getByTestId('btn-next');
           expect(nextButton).toBeInTheDocument();
           userEvent.click(nextButton);
@@ -164,9 +167,9 @@ describe('Testa se a página de Game tem os elementos e comportamentos esperados
           const category = screen.getByTestId('question-category');
           expect(category).toHaveTextContent('Science: Computers');
 
-          const answerWrong = screen.getByTestId('wrong-answer-0');
+          const answer = screen.getByTestId('correct-answer');
 
-          userEvent.click(answerWrong);
+          userEvent.click(answer);
           const nextButton = screen.getByTestId('btn-next');
           expect(nextButton).toBeInTheDocument();
           userEvent.click(nextButton);
@@ -184,6 +187,42 @@ describe('Testa se a página de Game tem os elementos e comportamentos esperados
           expect(nextButton).toBeInTheDocument();
           userEvent.click(nextButton);
         });
+
+        await waitFor(() => {
+          jest.advanceTimersByTime(5000);
+          const category = screen.getByTestId('question-category');
+          expect(category).toHaveTextContent('Entertainment: Japanese Anime & Manga');
+
+          const answerWrong = screen.getByTestId('wrong-answer-0');
+
+          userEvent.click(answerWrong);
+          const nextButton = screen.getByTestId('btn-next');
+          expect(nextButton).toBeInTheDocument();
+          userEvent.click(nextButton);
+
+          const { pathname } = history.location;
+          expect(pathname).toBe('/feedback');
+        });
+        })
+        it('testa se botao esta disabilitado depois de 30 secs', async () => {
+          renderWithRouterAndRedux(<App />)
+          const nameUser = 'pedro'
+          const emailUser = 'teste@teste.com'
+          const btnPlay = screen.getByRole('button', { name: 'Play' });
+          expect(btnPlay).toBeInTheDocument();
+          const input = screen.getAllByRole('textbox');
+      
+          userEvent.type(input[0], nameUser);
+          userEvent.type(input[1], emailUser);
+          fireEvent.click(btnPlay);
+    
+          await waitFor(() => {
+            jest.advanceTimersByTime(30000);
+
+            const answer = screen.getByTestId('correct-answer');
+            expect(answer).toBeDisabled();
+  
+          });
 
       jest.restoreAllMocks();
     })
