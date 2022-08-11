@@ -31,6 +31,10 @@ class Game extends Component {
     this.handleTimer();
   }
 
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
   handleTimer = () => {
     clearInterval(this.timer);
     this.timer = setInterval(() => {
@@ -94,6 +98,7 @@ class Game extends Component {
 
     if (counter === returnQuestions.length - 1) {
       history.push('/feedback');
+      return;
     }
     this.setState((state) => ({
       nextButtonHidden: true,
@@ -101,10 +106,13 @@ class Game extends Component {
       secondsTimer: 30,
       questionsColors: false,
       disabled: false,
-    }), () => {
-      this.randomPositions();
-      this.handleTimer();
-    });
+    // }), () => {
+    //   this.randomPositions();
+    //   this.handleTimer();
+    // });
+    }));
+    this.randomPositions();
+    this.handleTimer();
   }
 
   randomPositions = () => {
