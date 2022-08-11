@@ -6,8 +6,6 @@ import { getScore } from '../redux/action';
 import { fetchTrivia } from '../services/fetchApi';
 import '../style.component/game.css';
 
-// import { fetchGravatar } from '../services/fetchApi';
-
 const seconds = 1000;
 class Game extends Component {
   state = {
@@ -25,11 +23,6 @@ class Game extends Component {
     await this.getQuestions();
     this.randomPositions();
     this.handleTimer();
-    // btnDisabled = () => {
-    //   this.setState((prevState) => ({
-    //     disabled: !prevState.prevState,
-    //   }));
-    // }
   }
 
   handleTimer = () => {
@@ -46,7 +39,6 @@ class Game extends Component {
 
   clearTimer = () => {
     clearInterval(this.timer);
-    // this.btnDisabled();
     this.setState({
       disabled: true,
       nextButtonHidden: false,
