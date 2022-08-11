@@ -46,6 +46,8 @@ class Game extends Component {
     this.btnDisabled();
     this.setState({
       disabled: true,
+      nextButtonHidden: false,
+      questionsColors: true,
     });
   }
 
@@ -85,6 +87,7 @@ class Game extends Component {
     this.setState({
       questionsColors: true,
       nextButtonHidden: false,
+      disabled: true,
     });
   }
 
@@ -100,6 +103,7 @@ class Game extends Component {
       counter: state.counter + 1,
       secondsTimer: 30,
       questionsColors: false,
+      disabled: false,
     }), () => this.randomPositions());
   }
 
