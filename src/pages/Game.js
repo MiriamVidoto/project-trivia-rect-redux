@@ -6,6 +6,8 @@ import { getScore } from '../redux/action';
 import { fetchTrivia } from '../services/fetchApi';
 import '../style.component/game.css';
 
+const he = require('he');
+
 const timeout = 1000;
 const scoreBase = 10;
 const scoreHard = 3;
@@ -146,7 +148,7 @@ class Game extends Component {
           data-testid={ `wrong-answer-${index}` }
           onClick={ () => this.handleClick() }
         >
-          {answer}
+          {he.decode(answer)}
         </button>
       )),
       (
@@ -158,7 +160,7 @@ class Game extends Component {
           key="correct"
           onClick={ () => this.handleClick(true) }
         >
-          {returnQuestions[counter].correct_answer}
+          {he.decode(returnQuestions[counter].correct_answer)}
         </button>
       ),
       ];
@@ -185,7 +187,7 @@ class Game extends Component {
               </h2>
               <span data-testid="question-text">
                 {returnQuestions.length > 0
-            && returnQuestions[counter].question}
+            && he.decode(returnQuestions[counter].question)}
               </span>
             </div>
             <div
