@@ -106,13 +106,10 @@ class Game extends Component {
       secondsTimer: 30,
       questionsColors: false,
       disabled: false,
-    // }), () => {
-    //   this.randomPositions();
-    //   this.handleTimer();
-    // });
-    }));
-    this.randomPositions();
-    this.handleTimer();
+    }), () => {
+      this.randomPositions();
+      this.handleTimer();
+    });
   }
 
   randomPositions = () => {
