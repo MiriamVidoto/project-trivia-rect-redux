@@ -7,6 +7,7 @@ import { fetchTrivia } from '../services/fetchApi';
 import '../style.component/game.css';
 
 // import { fetchGravatar } from '../services/fetchApi';
+const he = require('he');
 
 const seconds = 1000;
 class Game extends Component {
@@ -30,7 +31,7 @@ class Game extends Component {
         secondsTimer: prevState.secondsTimer - 1,
       }), () => {
         const { secondsTimer } = this.state;
-        if (!secondsTimer) return this.clearTime();
+        if (!secondsTimer) this.clearTime();
       });
     }, seconds);
   }
@@ -82,9 +83,11 @@ class Game extends Component {
     if (isCorrectAnswer) {
       this.validationScore();
     }
+    // this.clearTime();
     this.setState({
       questionsColors: true,
       nextButtonHidden: false,
+      disabled: true,
     });
   }
 
@@ -100,6 +103,7 @@ class Game extends Component {
       counter: state.counter + 1,
       secondsTimer: 30,
       questionsColors: false,
+      disabled: false,
     }), () => this.randomPositions());
   }
 
@@ -142,7 +146,7 @@ class Game extends Component {
           data-testid={ `wrong-answer-${index}` }
           onClick={ () => this.handleClick() }
         >
-          {answer}
+          {he.decode(answer)}
         </button>
       )),
       (
@@ -154,7 +158,7 @@ class Game extends Component {
           key="correct"
           onClick={ () => this.handleClick(true) }
         >
-          {returnQuestions[counter].correct_answer}
+          {he.decode(returnQuestions[counter].correct_answer)}
         </button>
       ),
       ];
@@ -181,7 +185,7 @@ class Game extends Component {
               </h2>
               <span data-testid="question-text">
                 {returnQuestions.length > 0
-            && returnQuestions[counter].question}
+            && he.decode(returnQuestions[counter].question)}
               </span>
             </div>
             <div
