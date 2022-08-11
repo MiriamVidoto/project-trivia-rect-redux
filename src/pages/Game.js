@@ -6,7 +6,13 @@ import { getScore } from '../redux/action';
 import { fetchTrivia } from '../services/fetchApi';
 import '../style.component/game.css';
 
-const seconds = 1000;
+const timeout = 1000;
+const scoreBase = 10;
+const scoreHard = 3;
+const scoreMedium = 2;
+const numberOfAnswers = 4;
+const numberToRandomSort = 0.5;
+
 class Game extends Component {
   state = {
     returnQuestions: [],
@@ -34,7 +40,7 @@ class Game extends Component {
         const { secondsTimer } = this.state;
         if (!secondsTimer) this.clearTimer();
       });
-    }, seconds);
+    }, timeout);
   };
 
   clearTimer = () => {
@@ -60,10 +66,6 @@ class Game extends Component {
     const { setScore } = this.props;
     const { difficulty } = returnQuestions[counter];
 
-    const scoreBase = 10;
-    const scoreHard = 3;
-    const scoreMedium = 2;
-
     if (difficulty === 'hard') {
       setScore(scoreBase + (secondsTimer * scoreHard));
     }
@@ -87,10 +89,10 @@ class Game extends Component {
   }
 
   nextButtonClick = () => {
-    const { counter } = this.state;
+    const { counter, returnQuestions } = this.state;
     const { history } = this.props;
-    const lastQuestionPosition = 4;
-    if (counter === lastQuestionPosition) {
+
+    if (counter === returnQuestions.length - 1) {
       history.push('/feedback');
     }
     this.setState((state) => ({
@@ -106,11 +108,9 @@ class Game extends Component {
   }
 
   randomPositions = () => {
-    const lastPosition = 3;
-    const positions = [0, 1, 2, lastPosition];
-    const number = 0.5;
+    const positions = [...Array(numberOfAnswers).keys()];
     this.setState({
-      randomPositions: positions.sort(() => Math.random() - number),
+      randomPositions: positions.sort(() => Math.random() - numberToRandomSort),
     });
   }
 
