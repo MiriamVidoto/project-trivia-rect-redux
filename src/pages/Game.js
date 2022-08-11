@@ -42,17 +42,19 @@ class Game extends Component {
         secondsTimer: prevState.secondsTimer - 1,
       }), () => {
         const { secondsTimer } = this.state;
-        if (!secondsTimer) this.clearTimer();
+        if (!secondsTimer) {
+          clearInterval(this.timer);
+          this.solveQuestion();
+        }
       });
     }, timeout);
   };
 
-  clearTimer = () => {
-    clearInterval(this.timer);
+  solveQuestion = () => {
     this.setState({
-      disabled: true,
-      nextButtonHidden: false,
       questionsColors: true,
+      nextButtonHidden: false,
+      disabled: true,
     });
   }
 
@@ -85,11 +87,7 @@ class Game extends Component {
     if (isCorrectAnswer) {
       this.validationScore();
     }
-    this.setState({
-      questionsColors: true,
-      nextButtonHidden: false,
-      disabled: true,
-    });
+    this.solveQuestion();
   }
 
   nextButtonClick = () => {
@@ -98,7 +96,6 @@ class Game extends Component {
 
     if (counter === returnQuestions.length - 1) {
       history.push('/feedback');
-      return;
     }
     this.setState((state) => ({
       nextButtonHidden: true,
