@@ -24,26 +24,29 @@ class Game extends Component {
   async componentDidMount() {
     await this.getQuestions();
     this.randomPositions();
+    this.handleTimer();
+    // btnDisabled = () => {
+    //   this.setState((prevState) => ({
+    //     disabled: !prevState.prevState,
+    //   }));
+    // }
+  }
 
+  handleTimer = () => {
+    clearInterval(this.timer);
     this.timer = setInterval(() => {
       this.setState((prevState) => ({
         secondsTimer: prevState.secondsTimer - 1,
       }), () => {
         const { secondsTimer } = this.state;
-        if (!secondsTimer) return this.clearTime();
+        if (!secondsTimer) this.clearTimer();
       });
     }, seconds);
-  }
+  };
 
-  btnDisabled = () => {
-    this.setState((prevState) => ({
-      disabled: !prevState.prevState,
-    }));
-  }
-
-  clearTime = () => {
+  clearTimer = () => {
     clearInterval(this.timer);
-    this.btnDisabled();
+    // this.btnDisabled();
     this.setState({
       disabled: true,
       nextButtonHidden: false,
@@ -104,7 +107,10 @@ class Game extends Component {
       secondsTimer: 30,
       questionsColors: false,
       disabled: false,
-    }), () => this.randomPositions());
+    }), () => {
+      this.randomPositions();
+      this.handleTimer();
+    });
   }
 
   randomPositions = () => {
