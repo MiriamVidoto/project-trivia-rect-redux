@@ -6,10 +6,15 @@ import { getScore } from '../redux/action';
 import { fetchTrivia } from '../services/fetchApi';
 import '../style.component/game.css';
 
-// import { fetchGravatar } from '../services/fetchApi';
 const he = require('he');
 
-const seconds = 1000;
+const timeout = 1000;
+const scoreBase = 10;
+const scoreHard = 3;
+const scoreMedium = 2;
+const numberOfAnswers = 4;
+const numberToRandomSort = 0.5;
+
 class Game extends Component {
   state = {
     returnQuestions: [],
@@ -25,27 +30,32 @@ class Game extends Component {
   async componentDidMount() {
     await this.getQuestions();
     this.randomPositions();
+    this.handleTimer();
+  }
 
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  handleTimer = () => {
+    clearInterval(this.timer);
     this.timer = setInterval(() => {
       this.setState((prevState) => ({
         secondsTimer: prevState.secondsTimer - 1,
       }), () => {
         const { secondsTimer } = this.state;
-        if (!secondsTimer) this.clearTime();
+        if (!secondsTimer) {
+          clearInterval(this.timer);
+          this.solveQuestion();
+        }
       });
-    }, seconds);
-  }
+    }, timeout);
+  };
 
-  btnDisabled = () => {
-    this.setState((prevState) => ({
-      disabled: !prevState.prevState,
-    }));
-  }
-
-  clearTime = () => {
-    clearInterval(this.timer);
-    this.btnDisabled();
+  solveQuestion = () => {
     this.setState({
+      questionsColors: true,
+      nextButtonHidden: false,
       disabled: true,
     });
   }
@@ -64,10 +74,6 @@ class Game extends Component {
     const { setScore } = this.props;
     const { difficulty } = returnQuestions[counter];
 
-    const scoreBase = 10;
-    const scoreHard = 3;
-    const scoreMedium = 2;
-
     if (difficulty === 'hard') {
       setScore(scoreBase + (secondsTimer * scoreHard));
     }
@@ -83,19 +89,14 @@ class Game extends Component {
     if (isCorrectAnswer) {
       this.validationScore();
     }
-    // this.clearTime();
-    this.setState({
-      questionsColors: true,
-      nextButtonHidden: false,
-      disabled: true,
-    });
+    this.solveQuestion();
   }
 
   nextButtonClick = () => {
-    const { counter } = this.state;
+    const { counter, returnQuestions } = this.state;
     const { history } = this.props;
-    const lastQuestionPosition = 4;
-    if (counter === lastQuestionPosition) {
+
+    if (counter === returnQuestions.length - 1) {
       history.push('/feedback');
     }
     this.setState((state) => ({
@@ -104,15 +105,16 @@ class Game extends Component {
       secondsTimer: 30,
       questionsColors: false,
       disabled: false,
-    }), () => this.randomPositions());
+    }), () => {
+      this.randomPositions();
+      this.handleTimer();
+    });
   }
 
   randomPositions = () => {
-    const lastPosition = 3;
-    const positions = [0, 1, 2, lastPosition];
-    const number = 0.5;
+    const positions = [...Array(numberOfAnswers).keys()];
     this.setState({
-      randomPositions: positions.sort(() => Math.random() - number),
+      randomPositions: positions.sort(() => Math.random() - numberToRandomSort),
     });
   }
 
