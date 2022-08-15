@@ -19,7 +19,8 @@ h1 {
   flex-direction: column;
   height: 300px;
   justify-content: space-around;
-  width: 300px;
+  max-width: 300px;
+  width: 85vw;
 }
 
 .button-play {
@@ -82,4 +83,3 @@ h1 {
 .input-user:focus {
   border: 1px solid rgb(1, 229, 155);
 }
-

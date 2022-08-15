@@ -1,58 +1,55 @@
 .mainRanking {
+  align-items: center;
+  color: aliceblue;
   display: flex;
   flex-direction: column;
+  font-family: Roboto , sans-serif;
+  font-size: 25px;
   height: 100vh;
-
-  /* overflow-y: scroll; */
-}
-
-body {
-  max-height: 100vh;
+  justify-content: flex-start;
 }
 
 .rankingDiv {
-  color: aliceblue;
-  font-family: Roboto , sans-serif;
-  font-size: 30px;
+  font-size: 36px;
   height: 40px;
-  margin-top: 20px;
+  margin-top: 30px;
   text-align: center;
 }
 
-li {
+.mainRanking ul {
+  margin-top: 30px;
+  padding: 0;
+}
+
+.mainRanking li {
   align-items: center;
   border: 1px solid rgb(1, 229, 155);
   border-radius: 10px;
   display: flex;
-  height: 90px;
-  justify-content: space-around;
+  height: 60px;
+  justify-content: space-between;
   list-style: none;
   margin-top: 10px;
-  width: 650px;
+  max-width: 600px;
+  padding: 0 25px;
+  width: 85vw;
 }
 
-li:nth-child( 1 ) {
+.mainRanking li img {
+  height: 75%;
+  width: auto;
+}
+
+.mainRanking li:nth-child( 1 ) {
   background-color: rgba(236, 182, 58, 0.7);
 }
 
-li:nth-child( 2 ) {
+.mainRanking li:nth-child( 2 ) {
   background-color: rgba(192, 192, 192, 0.7);
 }
 
-li:nth-child( 3 ) {
+.mainRanking li:nth-child( 3 ) {
   background-color: rgba(221, 107, 26, 0.7);
-}
-
-.nameRanking {
-  color: aliceblue;
-  font-family: Roboto , sans-serif;
-  font-size: 25px;
-}
-
-.scoreRanking {
-  color: aliceblue;
-  font-family: Roboto , sans-serif;
-  font-size: 25px;
 }
 
 .homeButton {
@@ -66,14 +63,30 @@ li:nth-child( 3 ) {
   font-size: 16px;
   height: 40px;
   justify-content: center;
+  max-width: 70vw;
   outline: none;
   overflow: visible;
   padding: 10px 22px;
   text-decoration: none;
-  width: 20%;
 }
 
 .homeButton:hover {
   background-color: rgb(1, 229, 155);
   color: black;
+  transition: color 0.3s ease-in-out;
+}
+
+@media ( max-width : 400px ) {
+
+  .mainRanking {
+    font-size: 22px;
+  }
+
+  .rainkingDiv {
+    font-size: 32px;
+  }
+
+  .mainRanking li {
+    width: 75vw;
+  }
 }
