@@ -13,6 +13,12 @@ h1 {
   justify-content: center;
 }
 
+.login img {
+  margin-bottom: 60px;
+  max-width: 500px;
+  width: 90vw;
+}
+
 .login-form {
   align-content: flex-start;
   display: flex;

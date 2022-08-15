@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { gravatarAction, playerLogin } from '../redux/action';
 import { fetchToken } from '../services/fetchApi';
 import '../style.component/login.css';
+import Logo from '../trivia.png';
 
 class Login extends Component {
   state = {
@@ -46,7 +47,7 @@ class Login extends Component {
     return (
       <div>
         <div className="login">
-          <h1>Login</h1>
+          <img src={ Logo } alt="Trivia" />
           <form className="login-form">
             <label htmlFor="email">
               <input
