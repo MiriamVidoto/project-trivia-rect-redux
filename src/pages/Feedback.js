@@ -23,7 +23,7 @@ class Feedback extends Component {
     const result = assertions < feedbackCondition ? 'Could be better...' : 'Well Done!';
 
     return (
-      <div>
+      <div className="container">
         <Header />
         <div className="feedback-card">
           <h2 data-testid="feedback-text">{ result }</h2>
