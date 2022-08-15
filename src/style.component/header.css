@@ -6,6 +6,7 @@
   display: flex;
   height: 100px;
   justify-content: space-between;
+  padding: 15px 0;
   width: 100%;
 
 }
@@ -17,10 +18,15 @@
   color: aliceblue;
   display: flex;
   font-family: Roboto , sans-serif;
-  font-size: large;
+  font-size: 28px;
   font-weight: 600;
   justify-content: space-around;
   width: 250px;
+}
+
+.header-image img {
+  max-width: 80px;
+  width: 40vw;
 }
 
 .header-score {
@@ -30,7 +36,8 @@
   color: aliceblue;
   display: flex;
   font-family: Roboto , sans-serif;
-  font-size: large;
+
+  /* font-size: 28; */
   justify-content: center;
   width: 200px;
 }
@@ -41,4 +48,15 @@
 
 .header-gravatar {
   border-radius: 50%;
+}
+
+@media ( max-width : 520px ) {
+
+  .header-image {
+    font-size: 22px;
+  }
+
+  .headerScore {
+    font-size: 34px;
+  }
 }
