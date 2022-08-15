@@ -17,6 +17,7 @@
   height: 450px;
   justify-content: space-between;
   margin-top: 60px;
+  padding: 30px;
   width: 350px;
 }
 
@@ -65,7 +66,8 @@ button {
 }
 
 button:hover {
-  zoom: 130%;
+  background-color: rgba(240, 248, 255, 0.15);
+  transition: background-color 0.3s ease-in-out;
 }
 
 .categoryDiv {
@@ -85,18 +87,19 @@ button:hover {
 }
 
 .nextButton {
-  background-color: rgb(1, 229, 155);
+  background-color: rgba(1, 229, 155, 0.6);
   border-radius: 8px;
   color: black;
   font-family: Roboto , sans-serif;
   font-size: 20px;
   height: 100%;
   letter-spacing: 1px;
+  transition: background-color 0.3s ease-in-out;
   width: 100%;
 }
 
 .nextButton:hover {
-  text-decoration: underline;
+  background-color: rgba(1, 229, 155, 1);
 }
 
 .correct-answer {

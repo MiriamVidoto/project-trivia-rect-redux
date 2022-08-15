@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../component/Header';
+import '../style.component/feedback.css';
 
 class Feedback extends Component {
   componentDidMount() {
@@ -24,23 +25,39 @@ class Feedback extends Component {
     return (
       <div>
         <Header />
-        <h3 data-testid="feedback-text">{ result }</h3>
-        <h3><span data-testid="feedback-total-score">{ score }</span></h3>
-        <h3><span data-testid="feedback-total-question">{ assertions }</span></h3>
-        <button
-          type="button"
-          data-testid="btn-play-again"
-          onClick={ () => history.push('/') }
-        >
-          Play Again
-        </button>
-        <button
-          type="button"
-          data-testid="btn-ranking"
-          onClick={ () => history.push('/ranking') }
-        >
-          Ranking
-        </button>
+        <div className="feedback-card">
+          <h2 data-testid="feedback-text">{ result }</h2>
+          <h3>
+            <span data-testid="feedback-total-score">
+              Total score:
+              {' '}
+              { score }
+            </span>
+          </h3>
+          <h3>
+            <span data-testid="feedback-total-question">
+              Correct answers:
+              {' '}
+              { assertions }
+            </span>
+          </h3>
+          <div className="feedback-buttons">
+            <button
+              type="button"
+              data-testid="btn-play-again"
+              onClick={ () => history.push('/') }
+            >
+              Play Again
+            </button>
+            <button
+              type="button"
+              data-testid="btn-ranking"
+              onClick={ () => history.push('/ranking') }
+            >
+              Ranking
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
