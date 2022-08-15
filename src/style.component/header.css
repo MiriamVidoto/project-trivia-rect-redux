@@ -56,7 +56,18 @@
     font-size: 22px;
   }
 
+  .header-image img {
+    max-width: 60px;
+  }
+
   .headerScore {
     font-size: 34px;
+  }
+}
+
+@media ( max-width : 290px ) {
+
+  .header-container {
+    height: 50px;
   }
 }

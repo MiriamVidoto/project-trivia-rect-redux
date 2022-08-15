@@ -54,10 +54,10 @@
 
 .homeButton {
   align-items: center;
-  background: transparent;
+  background: rgba(1, 229, 155, 0.6);
   border: 2px solid rgb(1, 229, 155);
   border-radius: 8px;
-  color: rgb(1, 229, 155);
+  color: black;
   cursor: pointer;
   display: flex;
   font-size: 16px;
@@ -72,8 +72,6 @@
 
 .homeButton:hover {
   background-color: rgb(1, 229, 155);
-  color: black;
-  transition: color 0.3s ease-in-out;
 }
 
 @media ( max-width : 400px ) {

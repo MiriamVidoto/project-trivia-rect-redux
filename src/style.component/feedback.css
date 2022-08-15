@@ -66,3 +66,15 @@
     width: 180px;
   }
 }
+
+@media ( max-width : 290px ) {
+
+  .feedback-card h3 {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .feedback-card h2 {
+    font-size: 24px;
+  }
+}
