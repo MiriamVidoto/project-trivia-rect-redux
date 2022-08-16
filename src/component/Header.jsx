@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import '../style.component/header.css';
 
-// import { fetchGravatar } from '../services/fetchApi';
-
 class Header extends Component {
   render() {
     const { hashEmail, name, score } = this.props;
@@ -17,7 +15,6 @@ class Header extends Component {
             src={ `https://www.gravatar.com/avatar/${hashEmail}` }
             alt="foto"
           />
-          {/* <span>Valmir chagas</span> */}
           <span data-testid="header-player-name">{ name }</span>
         </div>
         <div className="header-score">
