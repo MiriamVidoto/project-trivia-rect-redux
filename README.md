@@ -1,4 +1,4 @@
-#Boas-vindas ao repositório do projeto de Trivia!
+# Boas-vindas ao repositório do projeto de Trivia!
 
 Este foi um projeto em grupo, realizado durante o meu curso  na Trybe, onde utilizamos metodologias ageis para nossa organização.
 
